@@ -1,29 +1,23 @@
+![Work in Progress](https://img.shields.io/badge/status-work--in--progress-orange?style=for-the-badge&logo=github)
 # GearLab
 
-GearLab is a complete pipeline for bevel gear design, with tools for defining
-gear parameters, generating 3D models, and exporting them for simulation or
-manufacturing.
+**GearLab** is a C++ pipeline for **bevel gear design**, from parameter
+definition to 3D modeling and export for simulation or manufacturing.  
 
-GearLab is a C++ project that focuses on the design and analysis of bevel
-gears, specifically using spherical involute profiles. Use cases include 3D
-printing, forging, injection moulding and milling of bevel gears where
-spherical involute profiles can be manufactured efficiently.
+It focuses on **spherical involute profiles**, making it suitable for bevel
+gears produced via **3D printing, forging, injection moulding, or milling**,
+where spherical involute profiles can be manufactured efficiently.  
 
-GearLab is designed to be a comprehensive solution for engineers and designers
-working with bevel gears, offering both macro and micro geometry generation,
-contact analysis, and visualization capabilities.
-
-GearLab is built using C++ and OpenGL, leveraging modern graphics techniques
-for rendering and analysis. The project is structured to facilitate easy
-extension and integration with other open source tools such as FreeCAD, CalculiX and gmsh.
+With GearLab, you can handle the **entire design workflow** — macro geometry,
+micro geometry, contact analysis, and visualization — all in one place.  
 
 ## Features (Planned)
 
-- **Spherical Involute Gear Design**: Define gear parameters using spherical involute profiles.
-- **Macro and Micro Geometry**: Generate both macro and micro geometry for bevel gears.
-- **Contact Analysis**: Perform contact analysis using the LTCA (Local Tooth Contact Analysis) method.
-- **Export Capabilities**: Export gear models to formats suitable for FEM analysis or manufacturing.
-- **Visualization**: Render 3D models using OpenGL for visual inspection.
+- **Spherical Involute Gear Design** – Define gear parameters using accurate spherical involute geometry.  
+- **Macro & Micro Geometry** – Generate full macro geometry and detailed micro geometry for bevel gears.  
+- **Contact Analysis** – Perform LTCA (Local Tooth Contact Analysis) for accurate load and contact predictions.  
+- **Export** – Export gear models for FEM or manufacturing (FreeCAD, Gmsh, CalculiX).  
+- **3D Visualization** – Inspect gear models in real-time with OpenGL rendering.  
 
 ## Directory structure
 
