@@ -97,7 +97,7 @@ struct BevelGearPair {
     gearPitch = module * numGearTeeth;
     pinionPitch = module * numPinionTeeth;
     pitchConeDistance = gearPitch / (2 * sin(deg2rad(PA)));
-    addendum =  - faceConeOffset * (sin(deg2rad(FA)) / cos(deg2rad(FA - PA)));
+    addendum =  faceConeOffset * (sin(deg2rad(FA)) / cos(deg2rad(FA - PA)));
     addendum += pitchConeDistance * tan(deg2rad(FA - PA));
     dedendum = - rootConeOffset * (sin(deg2rad(RA)) / cos(deg2rad(PA - RA)));
     dedendum += pitchConeDistance * tan(deg2rad(PA - RA));
