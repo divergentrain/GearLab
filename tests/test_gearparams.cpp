@@ -71,12 +71,12 @@ bool testParams(const std::string &testName, const BevelGear &gear,
   std::cout << COLOR_YELLOW << "Running test: " << COLOR_RESET << testName
             << std::endl;
   // Gear checks
-  passed &= checkValue("Gear PA", gear.PA, CAD.PA, tol);
+  passed &= checkValue("Gear pitchConeAngle", gear.pitchConeAngle, CAD.PA, tol);
   passed &= checkValue("Gear addendum", gear.addendum, CAD.addendum, tol);
   passed &= checkValue("Gear dedendum", gear.dedendum, CAD.dedendum, tol);
 
   // Pinion checks
-  passed &= checkValue("Pinion PA", pinion.PA, CAD.pinionPA, tol);
+  passed &= checkValue("Pinion pitchConeAngle", pinion.pitchConeAngle, CAD.pinionPA, tol);
   passed &= checkValue("Pinion faceConeOffset", pinion.faceConeOffset,
                        CAD.pinionFaceConeOffset, tol);
   passed &= checkValue("Pinion rootConeOffset", pinion.rootConeOffset,
@@ -91,11 +91,12 @@ bool testParams(const std::string &testName, const BevelGear &gear,
 
 int main() {
   std::vector<GearTestCase> testCases = {
-      {BevelGearPair(11, 9, 5.593454, 0.1, 1.5, 90, 60, 40, 0, -0.74, 19.43,
-                     60),
+      {BevelGearPair(11, 9, 5.593454, 0.1, 1.5, 90, 60, 40, 0, -0.74, 19.43, 60,
+                     20),
        CADReferenceData(), // defaults as the values for the 9-11 gear
        "Gear parameter calculation checks for 9-11 ratio test"},
-      {BevelGearPair(14, 9, 4.77651, 0.1, 1.5, 90, 65, 45, 1.2, 0, 24.0405, 60),
+      {BevelGearPair(14, 9, 4.77651, 0.1, 1.5, 90, 65, 45, 1.2, 0, 24.0405, 60,
+                     20),
        CADReferenceData(57.265, 6.49665, 8.640975, 32.73522627,
                         -2.12132034355964, -6.12272, 7.10593991512259, 8.01044),
        "Gear parameter calculation checks for 9-14 ratio test"}};
