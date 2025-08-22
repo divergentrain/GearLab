@@ -1,0 +1,36 @@
+name: Clang Format Check
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  clang-format:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install clang-format
+        run: sudo apt-get install -y clang-format
+
+      - name: Run clang-format check
+        id: format
+        run: |
+          files=$(find src tests -name "*.cpp" -o -name "*.h")
+          if [ -n "$files" ]; then
+            # Save diffs to a file
+            clang-format -i $files
+            git diff > clang-format-diff.patch
+            # Run check
+            clang-format --dry-run --Werror $files || echo "FORMAT_ERROR" > format_error.log
+          fi
+
+      - name: Upload formatting diff
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: clang-format-diff
+          path: clang-format-diff.patch

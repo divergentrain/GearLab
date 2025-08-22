@@ -1,11 +1,12 @@
 // test_gearparams.cpp
 // Unit test for checking gear parameter calculations
 
-#include "../src/geometry/GearParams.h"
 #include <cassert>
 #include <cmath>
 #include <iostream>
 #include <vector>
+
+#include "../src/geometry/GearParams.h"
 
 #define COLOR_RESET "\033[0m"
 #define COLOR_RED "\033[31m"
@@ -29,10 +30,14 @@ struct CADReferenceData {
   CADReferenceData(double PA, double addendum, double dedendum, double pinionPA,
                    double pinionFaceConeOffset, double pinionRootConeOffset,
                    double pinionAddendum, double pinionDedendum)
-      : PA(PA), addendum(addendum), dedendum(dedendum), pinionPA(pinionPA),
+      : PA(PA),
+        addendum(addendum),
+        dedendum(dedendum),
+        pinionPA(pinionPA),
         pinionFaceConeOffset(pinionFaceConeOffset),
         pinionRootConeOffset(pinionRootConeOffset),
-        pinionAddendum(pinionAddendum), pinionDedendum(pinionDedendum) {}
+        pinionAddendum(pinionAddendum),
+        pinionDedendum(pinionDedendum) {}
 };
 
 struct GearTestCase {
@@ -41,7 +46,7 @@ struct GearTestCase {
   std::string testName;
 };
 
-bool checkValue(const std::string &name, double calculated, double expected,
+bool checkValue(const std::string& name, double calculated, double expected,
                 double tolerance) {
   if (std::fabs(calculated - expected) >= tolerance) {
     std::cout << COLOR_RED << " ❌ The value of " << name << " is "
@@ -55,7 +60,7 @@ bool checkValue(const std::string &name, double calculated, double expected,
   return true;
 }
 
-void printTestResult(const std::string &testName, bool passed) {
+void printTestResult(const std::string& testName, bool passed) {
   if (passed) {
     std::cout << COLOR_GREEN << "[PASS] " << COLOR_RESET << testName
               << std::endl;
@@ -64,8 +69,8 @@ void printTestResult(const std::string &testName, bool passed) {
   }
 }
 
-bool testParams(const std::string &testName, const BevelGear &gear,
-                const BevelGear &pinion, const CADReferenceData &CAD) {
+bool testParams(const std::string& testName, const BevelGear& gear,
+                const BevelGear& pinion, const CADReferenceData& CAD) {
   bool passed = true;
   constexpr double tol = 0.01;
   std::cout << COLOR_YELLOW << "Running test: " << COLOR_RESET << testName
@@ -90,12 +95,12 @@ bool testParams(const std::string &testName, const BevelGear &gear,
   return passed;
 }
 
-bool testValidations(const std::string &testName, const BevelGearPair &pair) {
+bool testValidations(const std::string& testName, const BevelGearPair& pair) {
   bool passed = true;
   std::cout << COLOR_YELLOW << "Validating test input data: " << COLOR_RESET
             << testName << std::endl;
 
-  auto check = [&](const std::string &name, bool condition) {
+  auto check = [&](const std::string& name, bool condition) {
     if (!condition) {
       std::cout << COLOR_RED << " ❌ Validation failed: " << name << COLOR_RESET
                 << std::endl;
@@ -118,8 +123,8 @@ int main() {
   std::vector<GearTestCase> testCases = {
       {BevelGearPair(11, 9, 5.593454, 0.1, 1.5, 90, 60, 40, 0, -0.74, 19.43, 60,
                      20),
-       CADReferenceData(), // defaults as the values for the 9-11 gear
-                           // assets/CAD/Gear_1.FCStd
+       CADReferenceData(),  // defaults as the values for the 9-11 gear
+                            // assets/CAD/Gear_1.FCStd
        "Gear parameter calculation checks for 9-11 ratio test"},
       {BevelGearPair(14, 9, 4.77651, 0.1, 1.5, 90, 65, 45, 1.2, 0, 24.0405, 60,
                      20),
@@ -130,7 +135,7 @@ int main() {
 
   bool allPassed = true;
 
-  for (const auto &tc : testCases) {
+  for (const auto& tc : testCases) {
     BevelGear gear = tc.pair.makeGear();
     BevelGear pinion = tc.pair.makePinion();
 

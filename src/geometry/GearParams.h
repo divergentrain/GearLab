@@ -12,16 +12,16 @@ enum spiralFunction {
 
 // Utilities for spiralFunction handling
 struct spiralFunctionUtils {
-  static const char *toString(spiralFunction f) {
+  static const char* toString(spiralFunction f) {
     switch (f) {
-    case spiralFunction::Logarithmic:
-      return "Logarithmic";
-    case spiralFunction::CircularCut:
-      return "CircularCut";
-    case spiralFunction::Involute:
-      return "Involute";
-    default:
-      return "unknown";
+      case spiralFunction::Logarithmic:
+        return "Logarithmic";
+      case spiralFunction::CircularCut:
+        return "CircularCut";
+      case spiralFunction::Involute:
+        return "Involute";
+      default:
+        return "unknown";
     }
   }
 };
@@ -54,13 +54,22 @@ struct BevelGear {
             double pitchConeDistance, double addendum, double dedendum,
             double backlash, double shaftAngle, double pressureAngle,
             double spiralAngle, spiralFunction spiralType)
-      : numTeeth(numTeeth), pitchConeAngle(PA), faceConeAngle(FA),
-        rootConeAngle(RA), module(module), faceConeOffset(faceConeOffset),
-        rootConeOffset(rootConeOffset), innerConeDistance(innerConeDistance),
+      : numTeeth(numTeeth),
+        pitchConeAngle(PA),
+        faceConeAngle(FA),
+        rootConeAngle(RA),
+        module(module),
+        faceConeOffset(faceConeOffset),
+        rootConeOffset(rootConeOffset),
+        innerConeDistance(innerConeDistance),
         outerConeDistance(outerConeDistance),
-        pitchConeDistance(pitchConeDistance), addendum(addendum),
-        dedendum(dedendum), backlash(backlash), shaftAngle(shaftAngle),
-        pressureAngle(pressureAngle), spiralAngle(spiralAngle),
+        pitchConeDistance(pitchConeDistance),
+        addendum(addendum),
+        dedendum(dedendum),
+        backlash(backlash),
+        shaftAngle(shaftAngle),
+        pressureAngle(pressureAngle),
+        spiralAngle(spiralAngle),
         spiralType(spiralType) {}
 };
 
@@ -75,13 +84,21 @@ struct BevelGearPair {
                 double rootConeOffset, double innerConeDistance,
                 double outerConeDistance, double pressureAngle,
                 double spiralAngle = 0, spiralFunction spiralType = Logarithmic)
-      : numGearTeeth(numGearTeeth), numPinionTeeth(numPinionTeeth),
-        module(module), backlash(backlash), coneClearance(coneClearance),
-        shaftAngle(shaftAngle), faceConeAngle(FA), rootConeAngle(RA),
-        faceConeOffset(faceConeOffset), rootConeOffset(rootConeOffset),
+      : numGearTeeth(numGearTeeth),
+        numPinionTeeth(numPinionTeeth),
+        module(module),
+        backlash(backlash),
+        coneClearance(coneClearance),
+        shaftAngle(shaftAngle),
+        faceConeAngle(FA),
+        rootConeAngle(RA),
+        faceConeOffset(faceConeOffset),
+        rootConeOffset(rootConeOffset),
         innerConeDistance(innerConeDistance),
-        outerConeDistance(outerConeDistance), pressureAngle(pressureAngle),
-        spiralAngle(spiralAngle), spiralType(spiralType) {
+        outerConeDistance(outerConeDistance),
+        pressureAngle(pressureAngle),
+        spiralAngle(spiralAngle),
+        spiralType(spiralType) {
     computePA();
     computeDerivedValues();
     computePinionParameters();
@@ -92,19 +109,19 @@ struct BevelGearPair {
   int numGearTeeth = 0;
   int numPinionTeeth = 0;
   double module = 0;
-  double backlash = 0; // Angular backlash (deg)
+  double backlash = 0;  // Angular backlash (deg)
   double coneClearance =
-      1.5; // Clearance between gear face <-> pinion root and vice-versa
-  double shaftAngle = 90.0; // Shaft angle (deg)
+      1.5;  // Clearance between gear face <-> pinion root and vice-versa
+  double shaftAngle = 90.0;  // Shaft angle (deg)
 
   // Teeth geometry parameters for gear
-  double faceConeAngle = 0; // Face cone angle (deg)
-  double rootConeAngle = 0; // Root cone angle (deg)
+  double faceConeAngle = 0;  // Face cone angle (deg)
+  double rootConeAngle = 0;  // Root cone angle (deg)
   double faceConeOffset = 0;
   double rootConeOffset = 0;
-  double innerConeDistance = 0; // Inner pitch cone distance
-  double outerConeDistance = 0; // Outer pitch cone distance
-  double pitchConeDistance = 0; // Pitch cone distance for crowning center
+  double innerConeDistance = 0;  // Inner pitch cone distance
+  double outerConeDistance = 0;  // Outer pitch cone distance
+  double pitchConeDistance = 0;  // Pitch cone distance for crowning center
   double pressureAngle = 0;
   double spiralAngle = 0;
   spiralFunction spiralType = Logarithmic;
@@ -116,7 +133,7 @@ struct BevelGearPair {
   double pinionRootConeOffset = 0;
 
   // Computed parameters, no preifx implies gear
-  double pitchConeAngle = 0; // Pitch cone angle (deg)
+  double pitchConeAngle = 0;  // Pitch cone angle (deg)
   double pinionPitchConeAngle = 0;
   double gearPitch;
   double pinionPitch;
@@ -135,12 +152,14 @@ struct BevelGearPair {
     gearPitch = module * numGearTeeth;
     pinionPitch = module * numPinionTeeth;
     pitchConeDistance = gearPitch / (2 * sin(deg2rad(pitchConeAngle)));
-    addendum = faceConeOffset *
-               (sin(deg2rad(faceConeAngle)) / cos(deg2rad(faceConeAngle - pitchConeAngle)));
-    addendum += pitchConeDistance * tan(deg2rad(faceConeAngle - pitchConeAngle));
-    dedendum = -rootConeOffset *
-               (sin(deg2rad(rootConeAngle)) / cos(deg2rad(pitchConeAngle - rootConeAngle)));
-    dedendum += pitchConeDistance * tan(deg2rad(pitchConeAngle - rootConeAngle));
+    addendum = faceConeOffset * (sin(deg2rad(faceConeAngle)) /
+                                 cos(deg2rad(faceConeAngle - pitchConeAngle)));
+    addendum +=
+        pitchConeDistance * tan(deg2rad(faceConeAngle - pitchConeAngle));
+    dedendum = -rootConeOffset * (sin(deg2rad(rootConeAngle)) /
+                                  cos(deg2rad(pitchConeAngle - rootConeAngle)));
+    dedendum +=
+        pitchConeDistance * tan(deg2rad(pitchConeAngle - rootConeAngle));
     pinionRootConeAngle = shaftAngle - faceConeAngle;
     pinionFaceConeAngle = shaftAngle - rootConeAngle;
     pinionAddendum =
@@ -168,8 +187,8 @@ struct BevelGearPair {
   }
 
   BevelGear makeGear() const {
-    return BevelGear(numGearTeeth, pitchConeAngle, faceConeAngle, rootConeAngle, module,
-                     faceConeOffset, rootConeOffset, innerConeDistance,
+    return BevelGear(numGearTeeth, pitchConeAngle, faceConeAngle, rootConeAngle,
+                     module, faceConeOffset, rootConeOffset, innerConeDistance,
                      outerConeDistance, pitchConeDistance, addendum, dedendum,
                      backlash, shaftAngle, pressureAngle, spiralAngle,
                      spiralType);
@@ -192,7 +211,8 @@ struct BevelGearPair {
     return numGearTeeth > numPinionTeeth && numPinionTeeth > 0;
   }
   bool validateAngles() const {
-    return (faceConeAngle > pitchConeAngle && pitchConeAngle > rootConeAngle && rootConeAngle > 0);
+    return (faceConeAngle > pitchConeAngle && pitchConeAngle > rootConeAngle &&
+            rootConeAngle > 0);
   }
   bool validateDistances() const {
     return outerConeDistance > innerConeDistance && innerConeDistance > 0;

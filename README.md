@@ -1,23 +1,25 @@
 ![Work in Progress](https://img.shields.io/badge/status-work--in--progress-orange?style=for-the-badge&logo=github)
+![Clang Format](https://github.com/neuroconvergent/GearLab/actions/workflows/clang-format.yml/badge.svg)
+
 # GearLab
 
 **GearLab** is a C++ pipeline for **bevel gear design**, from parameter
-definition to 3D modeling and export for simulation or manufacturing.  
+definition to 3D modeling and export for simulation or manufacturing.
 
 It focuses on **spherical involute profiles**, making it suitable for bevel
 gears produced via **3D printing, forging, injection moulding, or milling**,
-where spherical involute profiles can be manufactured efficiently.  
+where spherical involute profiles can be manufactured efficiently.
 
 With GearLab, you can handle the **entire design workflow** — macro geometry,
-micro geometry, contact analysis, and visualization — all in one place.  
+micro geometry, contact analysis, and visualization — all in one place.
 
 ## Features (Planned)
 
-- **Spherical Involute Gear Design** – Define gear parameters using accurate spherical involute geometry.  
-- **Macro & Micro Geometry** – Generate full macro geometry and detailed micro geometry for bevel gears.  
-- **Contact Analysis** – Perform LTCA (Local Tooth Contact Analysis) for accurate load and contact predictions.  
-- **Export** – Export gear models for FEM or manufacturing (FreeCAD, Gmsh, CalculiX).  
-- **3D Visualization** – Inspect gear models in real-time with OpenGL rendering.  
+- **Spherical Involute Gear Design** – Define gear parameters using accurate spherical involute geometry.
+- **Macro & Micro Geometry** – Generate full macro geometry and detailed micro geometry for bevel gears.
+- **Contact Analysis** – Perform LTCA (Local Tooth Contact Analysis) for accurate load and contact predictions.
+- **Export** – Export gear models for FEM or manufacturing (FreeCAD, Gmsh, CalculiX).
+- **3D Visualization** – Inspect gear models in real-time with OpenGL rendering.
 
 ## Directory structure
 
