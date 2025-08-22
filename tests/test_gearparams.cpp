@@ -94,11 +94,13 @@ int main() {
       {BevelGearPair(11, 9, 5.593454, 0.1, 1.5, 90, 60, 40, 0, -0.74, 19.43, 60,
                      20),
        CADReferenceData(), // defaults as the values for the 9-11 gear
+                           // assets/CAD/Gear_1.FCStd
        "Gear parameter calculation checks for 9-11 ratio test"},
       {BevelGearPair(14, 9, 4.77651, 0.1, 1.5, 90, 65, 45, 1.2, 0, 24.0405, 60,
                      20),
        CADReferenceData(57.265, 6.49665, 8.640975, 32.73522627,
                         -2.12132034355964, -6.12272, 7.10593991512259, 8.01044),
+                           // assets/CAD/Gear_2.FCStd
        "Gear parameter calculation checks for 9-14 ratio test"}};
 
   bool allPassed = true;

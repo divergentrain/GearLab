@@ -21,7 +21,7 @@ micro geometry, contact analysis, and visualization — all in one place.
 
 ## Directory structure
 
-```cpp
+```typogram
 GearLab
 ├── CMakeLists.txt
 ├── /src
@@ -47,8 +47,9 @@ GearLab
 │   │   ├── CalculixWriter.cpp/.h
 ├── /shaders
 ├── /assets
+│   ├── CAD/                          // CAD reference files for tests
+│   ├── images/                          // CAD reference files for tests
 └── /tests
-    ├── CAD/                          // CAD reference files for tests
     └── test_gearparams.cpp           // Unit tests for gear parameter calculations
 
 ```
