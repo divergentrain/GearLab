@@ -1,5 +1,5 @@
 ![Work in Progress](https://img.shields.io/badge/status-work--in--progress-orange?style=for-the-badge&logo=github)
-![Clang Format](https://github.com/neuroconvergent/GearLab/actions/workflows/clang-format.yml/badge.svg)
+![Clang Format](https://img.shields.io/github/actions/workflow/status/neuroconvergent/GearLab/clang-format.yml?style=for-the-badge&logo=github&label=clang-format)
 
 # GearLab
 
