@@ -30,7 +30,7 @@ jobs:
 
       - name: Upload formatting diff
         if: failure()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: clang-format-diff
           path: clang-format-diff.patch
