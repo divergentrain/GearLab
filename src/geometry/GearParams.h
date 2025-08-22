@@ -116,7 +116,7 @@ struct BevelGearPair {
   double pinionRootConeOffset = 0;
 
   // Computed parameters, no preifx implies gear
-  double PA = 0; // Pitch cone angle (deg)
+  double pitchConeAngle = 0; // Pitch cone angle (deg)
   double pinionPitchConeAngle = 0;
   double gearPitch;
   double pinionPitch;
@@ -127,20 +127,20 @@ struct BevelGearPair {
 
   void computePA() {
     double ratio = static_cast<double>(numPinionTeeth) / numGearTeeth;
-    PA = rad2deg(atan(sin(deg2rad(shaftAngle)) / ratio));
-    pinionPitchConeAngle = shaftAngle - PA;
+    pitchConeAngle = rad2deg(atan(sin(deg2rad(shaftAngle)) / ratio));
+    pinionPitchConeAngle = shaftAngle - pitchConeAngle;
   }
 
   void computeDerivedValues() {
     gearPitch = module * numGearTeeth;
     pinionPitch = module * numPinionTeeth;
-    pitchConeDistance = gearPitch / (2 * sin(deg2rad(PA)));
+    pitchConeDistance = gearPitch / (2 * sin(deg2rad(pitchConeAngle)));
     addendum = faceConeOffset *
-               (sin(deg2rad(faceConeAngle)) / cos(deg2rad(faceConeAngle - PA)));
-    addendum += pitchConeDistance * tan(deg2rad(faceConeAngle - PA));
+               (sin(deg2rad(faceConeAngle)) / cos(deg2rad(faceConeAngle - pitchConeAngle)));
+    addendum += pitchConeDistance * tan(deg2rad(faceConeAngle - pitchConeAngle));
     dedendum = -rootConeOffset *
-               (sin(deg2rad(rootConeAngle)) / cos(deg2rad(PA - rootConeAngle)));
-    dedendum += pitchConeDistance * tan(deg2rad(PA - rootConeAngle));
+               (sin(deg2rad(rootConeAngle)) / cos(deg2rad(pitchConeAngle - rootConeAngle)));
+    dedendum += pitchConeDistance * tan(deg2rad(pitchConeAngle - rootConeAngle));
     pinionRootConeAngle = shaftAngle - faceConeAngle;
     pinionFaceConeAngle = shaftAngle - rootConeAngle;
     pinionAddendum =
@@ -168,7 +168,7 @@ struct BevelGearPair {
   }
 
   BevelGear makeGear() const {
-    return BevelGear(numGearTeeth, PA, faceConeAngle, rootConeAngle, module,
+    return BevelGear(numGearTeeth, pitchConeAngle, faceConeAngle, rootConeAngle, module,
                      faceConeOffset, rootConeOffset, innerConeDistance,
                      outerConeDistance, pitchConeDistance, addendum, dedendum,
                      backlash, shaftAngle, pressureAngle, spiralAngle,
@@ -188,15 +188,17 @@ struct BevelGearPair {
 
   double rad2deg(double rad) { return rad * 180 / M_PI; }
 
-  bool validateParam() {
-    // TODO: create validation checks for parameter
-    if (numGearTeeth > numPinionTeeth && faceConeAngle > PA &&
-        PA > rootConeAngle && module >= 0.0 &&
-        outerConeDistance > innerConeDistance && innerConeDistance > 0 &&
-        rootConeAngle > 0 && numPinionTeeth > 0 && coneClearance > 0 &&
-        shaftAngle > 0)
-      return true;
-    else
-      return false;
+  bool validateToothCounts() const {
+    return numGearTeeth > numPinionTeeth && numPinionTeeth > 0;
+  }
+  bool validateAngles() const {
+    return (faceConeAngle > pitchConeAngle && pitchConeAngle > rootConeAngle && rootConeAngle > 0);
+  }
+  bool validateDistances() const {
+    return outerConeDistance > innerConeDistance && innerConeDistance > 0;
+  }
+  bool validateParam() const {
+    return validateToothCounts() && validateAngles() && validateDistances() &&
+           module >= 0 && coneClearance > 0 && shaftAngle > 0;
   }
 };

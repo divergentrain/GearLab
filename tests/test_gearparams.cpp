@@ -76,7 +76,8 @@ bool testParams(const std::string &testName, const BevelGear &gear,
   passed &= checkValue("Gear dedendum", gear.dedendum, CAD.dedendum, tol);
 
   // Pinion checks
-  passed &= checkValue("Pinion pitchConeAngle", pinion.pitchConeAngle, CAD.pinionPA, tol);
+  passed &= checkValue("Pinion pitchConeAngle", pinion.pitchConeAngle,
+                       CAD.pinionPA, tol);
   passed &= checkValue("Pinion faceConeOffset", pinion.faceConeOffset,
                        CAD.pinionFaceConeOffset, tol);
   passed &= checkValue("Pinion rootConeOffset", pinion.rootConeOffset,
@@ -85,6 +86,30 @@ bool testParams(const std::string &testName, const BevelGear &gear,
       checkValue("Pinion addendum", pinion.addendum, CAD.pinionAddendum, tol);
   passed &=
       checkValue("Pinion dedendum", pinion.dedendum, CAD.pinionDedendum, tol);
+
+  return passed;
+}
+
+bool testValidations(const std::string &testName, const BevelGearPair &pair) {
+  bool passed = true;
+  std::cout << COLOR_YELLOW << "Validating test input data: " << COLOR_RESET
+            << testName << std::endl;
+
+  auto check = [&](const std::string &name, bool condition) {
+    if (!condition) {
+      std::cout << COLOR_RED << " ❌ Validation failed: " << name << COLOR_RESET
+                << std::endl;
+      passed = false;
+    } else {
+      std::cout << COLOR_GREEN << " ✅ Validation passed: " << name
+                << COLOR_RESET << std::endl;
+    }
+  };
+
+  check("Tooth counts", pair.validateToothCounts());
+  check("Angles", pair.validateAngles());
+  check("Distances", pair.validateDistances());
+  check("Overall parameters", pair.validateParam());
 
   return passed;
 }
@@ -100,7 +125,7 @@ int main() {
                      20),
        CADReferenceData(57.265, 6.49665, 8.640975, 32.73522627,
                         -2.12132034355964, -6.12272, 7.10593991512259, 8.01044),
-                           // assets/CAD/Gear_2.FCStd
+       // assets/CAD/Gear_2.FCStd
        "Gear parameter calculation checks for 9-14 ratio test"}};
 
   bool allPassed = true;
@@ -108,7 +133,11 @@ int main() {
   for (const auto &tc : testCases) {
     BevelGear gear = tc.pair.makeGear();
     BevelGear pinion = tc.pair.makePinion();
-    bool passed = testParams(tc.testName, gear, pinion, tc.CAD);
+
+    bool validationPassed = testValidations(tc.testName, tc.pair);
+    bool paramPassed = testParams(tc.testName, gear, pinion, tc.CAD);
+
+    bool passed = paramPassed && validationPassed;
     printTestResult(tc.testName, passed);
     allPassed &= passed;
   }

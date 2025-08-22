@@ -48,7 +48,7 @@ GearLab
 ├── /shaders
 ├── /assets
 │   ├── CAD/                          // CAD reference files for tests
-│   ├── images/                          // CAD reference files for tests
+│   ├── images/                       // CAD reference files for tests
 └── /tests
     └── test_gearparams.cpp           // Unit tests for gear parameter calculations
 
