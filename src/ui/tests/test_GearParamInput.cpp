@@ -31,7 +31,7 @@ int main(int argc, char* argv[]) {
 
   centralWidget->setLayout(layout);
   mainWindow.setCentralWidget(centralWidget);
-  mainWindow.resize(600, 400);
+  mainWindow.resize(1200, 800);
   mainWindow.show();
 
   return app.exec();
