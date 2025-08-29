@@ -15,8 +15,8 @@ jobs:
       - name: Setup Qt # Generated with https://ddalcino.github.io/aqt-list-server/
         uses: jurplel/install-qt-action@v3
         with:
-          aqtversion: '==3.1.*' 
-          host: "linux" 
+          aqtversion: "==3.1.*"
+          host: "linux"
           target: "desktop" # desktop libraries
           tools: "tools_cmake" # Qt tools for cmake
 
@@ -26,8 +26,9 @@ jobs:
       - name: Create build directory
         run: mkdir build
 
+        # QT_ROOT_DIR set by install-qt-action
       - name: Configure with CMake
-        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=$HOME/Qt/$(ls $HOME/Qt)
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=$QT_ROOT_DIR
 
       - name: Build
         run: cmake --build build --target tests -- -j$(nproc)
