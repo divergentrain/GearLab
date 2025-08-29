@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.16)  # Qt6 usually needs >=3.16
 project(GearLab LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -11,26 +11,48 @@ enable_testing()
 # Add include path for headers
 include_directories(${CMAKE_SOURCE_DIR}/src)
 
-# Find all test .cpp files
+# ---- Find Qt ----
+find_package(Qt6 REQUIRED COMPONENTS Widgets Core Gui)
+
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC ON)
+
+# ---- Add your main executable (example) ----
+add_executable(gearlab ${CMAKE_SOURCE_DIR}/src/main.cpp)
+
+target_link_libraries(gearlab
+    PRIVATE
+    Qt6::Widgets
+    Qt6::Core
+    Qt6::Gui
+)
+
+# ---- Tests ----
+# Collect all .cpp files in tests/
 file(GLOB TEST_SOURCES CONFIGURE_DEPENDS
     ${CMAKE_SOURCE_DIR}/tests/*.cpp
 )
 
+# Make a meta-target "tests" that depends on all test executables
+set(TEST_EXECUTABLES "")
+
 foreach(test_src ${TEST_SOURCES})
-    # Get the filename without extension
     get_filename_component(test_name ${test_src} NAME_WE)
 
-    # Create an executable for this test
     add_executable(${test_name} ${test_src})
+    target_link_libraries(${test_name}
+        PRIVATE Qt6::Core Qt6::Widgets Qt6::Gui
+    )
 
-    # Link to any project libraries here if needed
-    # target_link_libraries(${test_name} PRIVATE some_library)
-
-    # Register it with CTest
     add_test(NAME ${test_name} COMMAND ${test_name})
 
-    # Pass color through CTest by forcing output to terminal
-    set_tests_properties(${test_name} PROPERTIES
-        ENVIRONMENT "CTEST_OUTPUT_ON_FAILURE=1"
-    )
+    list(APPEND TEST_EXECUTABLES ${test_name})
 endforeach()
+
+# Create a custom "tests" target so `make tests` builds them
+add_custom_target(tests DEPENDS ${TEST_EXECUTABLES})
+
+# ---- Manual tests for UI ----
+add_executable(test_GearParamInput src/ui/tests/test_GearParamInput.cpp)
+target_link_libraries(test_GearParamInput PRIVATE Qt6::Widgets Qt6::Core Qt6::Gui)
