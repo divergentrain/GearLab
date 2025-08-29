@@ -24,7 +24,7 @@ jobs:
       - name: Set Qt install path
         id: qtpath
         run: |
-          QT_DIR=$(find ${{ github.workspace }}/Qt -maxdepth 2 -type d -name "gcc_*" | head -n 1)
+          QT_DIR=$(find ${{ github.workspace }}/Qt -type d -name "gcc_*" | head -n1)
           echo "QT_DIR=$QT_DIR" >> $GITHUB_ENV
           ls -la $QT_DIR
 
