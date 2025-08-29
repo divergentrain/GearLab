@@ -112,7 +112,8 @@ QWidget* createGearParamForm(QWidget* parent = nullptr) {
     summary += QString("shaftAngle: %1\n").arg(gear.shaftAngle);
     summary += QString("pressureAngle: %1\n").arg(gear.pressureAngle);
     summary += QString("spiralAngle: %1\n").arg(gear.spiralAngle);
-    summary += QString("spiralType: %1\n").arg(gear.spiralType);
+    summary += QString("spiralType: %1\n")
+                   .arg(spiralFunctionUtils::toString(gear.spiralType));
 
     summary += "\n=== Pinion Parameters ===\n";
     summary += QString("numTeeth: %1\n").arg(pinion.numTeeth);
@@ -131,7 +132,8 @@ QWidget* createGearParamForm(QWidget* parent = nullptr) {
     summary += QString("shaftAngle: %1\n").arg(pinion.shaftAngle);
     summary += QString("pressureAngle: %1\n").arg(pinion.pressureAngle);
     summary += QString("spiralAngle: %1\n").arg(pinion.spiralAngle);
-    summary += QString("spiralType: %1\n").arg(pinion.spiralType);
+    summary += QString("spiralType: %1\n")
+                   .arg(spiralFunctionUtils::toString(pinion.spiralType));
 
     output->setText(summary);
 

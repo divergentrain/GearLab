@@ -54,5 +54,7 @@ endforeach()
 add_custom_target(tests DEPENDS ${TEST_EXECUTABLES})
 
 # ---- Manual tests for UI ----
-add_executable(test_GearParamInput src/ui/tests/test_GearParamInput.cpp)
+add_executable(test_GearParamInput 
+    ${CMAKE_SOURCE_DIR}/src/ui/tests/test_GearParamInput.cpp
+    ${CMAKE_SOURCE_DIR}/src/ui/OutputDirSelect.cpp)
 target_link_libraries(test_GearParamInput PRIVATE Qt6::Widgets Qt6::Core Qt6::Gui)

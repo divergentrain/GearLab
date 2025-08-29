@@ -1,11 +1,11 @@
 #include <QApplication>
 #include <QDebug>
 #include <QMainWindow>
-#include <QPushButton>
 #include <QVBoxLayout>
 #include <QWidget>
 
-#include "../ParamInput.cpp"  // for createGearParamForm()
+#include "../OutputDirSelect.hpp"
+#include "../ParamInput.cpp"
 
 int main(int argc, char* argv[]) {
   QApplication app(argc, argv);
@@ -16,18 +16,22 @@ int main(int argc, char* argv[]) {
   QWidget* centralWidget = new QWidget(&mainWindow);
   QVBoxLayout* layout = new QVBoxLayout(centralWidget);
 
-  // Create the form from ParamInput
-  QWidget* gearForm = createGearParamForm(centralWidget);
-  layout->addWidget(gearForm);
+  // Step 1: Show directory selector first
+  OutputDirSelect* dirSelector = new OutputDirSelect(centralWidget);
+  layout->addWidget(dirSelector);
 
-  // Add a test button at the bottom
-  QPushButton* submitButton = new QPushButton("Print Params", centralWidget);
-  layout->addWidget(submitButton);
+  // Step 2: When user confirms a directory, show the gear param form
+  QObject::connect(dirSelector, &OutputDirSelect::directoryConfirmed,
+                   [&](const QString& dir) {
+                     qDebug() << "Directory confirmed:" << dir;
 
-  // For now, just connect the button to a debug message
-  QObject::connect(submitButton, &QPushButton::clicked, [&]() {
-    qDebug() << "Form is displayed. Hook extraction logic later!";
-  });
+                     // Remove the directory selector widget
+                     dirSelector->hide();
+
+                     // Add gear form instead
+                     QWidget* gearForm = createGearParamForm(centralWidget);
+                     layout->addWidget(gearForm);
+                   });
 
   centralWidget->setLayout(layout);
   mainWindow.setCentralWidget(centralWidget);
