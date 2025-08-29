@@ -3,7 +3,7 @@
 #include <string>
 #include <variant>
 
-#include "GearParams.h"
+#include "GearParams.hpp"
 using namespace std;
 // Angles in degree and linear distance in mm unless specified
 // TODO: Check all constructors

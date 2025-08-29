@@ -1,0 +1,4 @@
+CompileFlags:
+  # Remove flags that clangd doesn’t understand
+  Remove: [--mno-direct-extern-access, -mno-direct-extern-access]
+

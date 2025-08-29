@@ -1,3 +1,4 @@
+// GearParams.hpp
 #pragma once
 
 #include <cmath>

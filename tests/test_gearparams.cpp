@@ -6,7 +6,7 @@
 #include <iostream>
 #include <vector>
 
-#include "../src/geometry/GearParams.h"
+#include "../src/geometry/GearParams.hpp"
 
 #define COLOR_RESET "\033[0m"
 #define COLOR_RED "\033[31m"

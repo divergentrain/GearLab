@@ -2,3 +2,5 @@ tests/test_gearparams
 *.FCBak
 *.ods#
 build/
+compile_commands.json
+.cache/clangd/index
