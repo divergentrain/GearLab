@@ -12,6 +12,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Setup Qt # Generated with https://ddalcino.github.io/aqt-list-server/
+        uses: jurplel/install-qt-action@v3
+        with:
+          aqtversion: '==3.1.*' 
+          host: "linux" 
+          target: "desktop" # desktop libraries
+          tools: "tools_cmake" # Qt tools for cmake
+
       - name: Install CMake
         uses: jwlawson/actions-setup-cmake@v1
 
@@ -19,7 +27,7 @@ jobs:
         run: mkdir build
 
       - name: Configure with CMake
-        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=$HOME/Qt/$(ls $HOME/Qt)
 
       - name: Build
         run: cmake --build build --target tests -- -j$(nproc)
