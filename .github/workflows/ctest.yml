@@ -15,10 +15,18 @@ jobs:
       - name: Setup Qt # Generated with https://ddalcino.github.io/aqt-list-server/
         uses: jurplel/install-qt-action@v3
         with:
-          aqtversion: '==3.1.*' 
-          host: "linux" 
+          aqtversion: "==3.1.*"
+          dir: ${{ github.workspace }}/Qt
+          host: "linux"
           target: "desktop" # desktop libraries
           tools: "tools_cmake" # Qt tools for cmake
+
+      - name: Set Qt install path
+        id: qtpath
+        run: |
+          QT_DIR=$(find ${{ github.workspace }}/Qt -maxdepth 2 -type d -name "gcc_*" | head -n 1)
+          echo "QT_DIR=$QT_DIR" >> $GITHUB_ENV
+          ls -la $QT_DIR
 
       - name: Install CMake
         uses: jwlawson/actions-setup-cmake@v1
@@ -26,8 +34,11 @@ jobs:
       - name: Create build directory
         run: mkdir build
 
+      - name: check qt install dir
+        run: ls -la ${{ github.workspace }}/Qt
+
       - name: Configure with CMake
-        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=$HOME/Qt/$(ls $HOME/Qt)
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$QT_DIR"
 
       - name: Build
         run: cmake --build build --target tests -- -j$(nproc)
