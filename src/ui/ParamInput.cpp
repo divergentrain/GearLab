@@ -4,9 +4,11 @@
 #include <QDialog>
 #include <QDoubleValidator>
 #include <QFormLayout>
+#include <QHeaderView>
 #include <QLineEdit>
 #include <QPushButton>
 #include <QSpinBox>
+#include <QTableWidget>
 #include <QTextEdit>
 #include <QVBoxLayout>
 #include <QWidget>
@@ -89,65 +91,87 @@ QWidget* createGearParamForm(QWidget* parent = nullptr) {
     // Result dialog
     QDialog* resultDialog = new QDialog(formWidget);
     resultDialog->setWindowTitle("Calculated Gear Parameters");
+    resultDialog->resize(600,800);
     QVBoxLayout* dlgLayout = new QVBoxLayout(resultDialog);
 
-    QTextEdit* output = new QTextEdit(resultDialog);
-    output->setReadOnly(true);
+    // Table widget: Variable | Gear | Pinion
+    // If Gear and Pinion values are same, cells are merged
+    QTableWidget* table = new QTableWidget(resultDialog);
+    table->setColumnCount(3);
+    table->setHorizontalHeaderLabels({"Variable", "Gear", "Pinion"});
+    table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
-    QString summary;
-    summary += "=== Gear Parameters ===\n";
-    summary += QString("numTeeth: %1\n").arg(gear.numTeeth);
-    summary += QString("pitchConeAngle: %1\n").arg(gear.pitchConeAngle);
-    summary += QString("faceConeAngle: %1\n").arg(gear.faceConeAngle);
-    summary += QString("rootConeAngle: %1\n").arg(gear.rootConeAngle);
-    summary += QString("module: %1\n").arg(gear.module);
-    summary += QString("faceConeOffset: %1\n").arg(gear.faceConeOffset);
-    summary += QString("rootConeOffset: %1\n").arg(gear.rootConeOffset);
-    summary += QString("innerConeDistance: %1\n").arg(gear.innerConeDistance);
-    summary += QString("outerConeDistance: %1\n").arg(gear.outerConeDistance);
-    summary += QString("pitchConeDistance: %1\n").arg(gear.pitchConeDistance);
-    summary += QString("addendum: %1\n").arg(gear.addendum);
-    summary += QString("dedendum: %1\n").arg(gear.dedendum);
-    summary += QString("backlash: %1\n").arg(gear.backlash);
-    summary += QString("shaftAngle: %1\n").arg(gear.shaftAngle);
-    summary += QString("pressureAngle: %1\n").arg(gear.pressureAngle);
-    summary += QString("spiralAngle: %1\n").arg(gear.spiralAngle);
-    summary += QString("spiralType: %1\n")
-                   .arg(spiralFunctionUtils::toString(gear.spiralType));
+    // Helper lambda to insert rows
+    auto addRow = [&](const QString& name, const QString& gearVal,
+                      const QString& pinionVal) {
+      int row = table->rowCount();
+      table->insertRow(row);
 
-    summary += "\n=== Pinion Parameters ===\n";
-    summary += QString("numTeeth: %1\n").arg(pinion.numTeeth);
-    summary += QString("pitchConeAngle: %1\n").arg(pinion.pitchConeAngle);
-    summary += QString("faceConeAngle: %1\n").arg(pinion.faceConeAngle);
-    summary += QString("rootConeAngle: %1\n").arg(pinion.rootConeAngle);
-    summary += QString("module: %1\n").arg(pinion.module);
-    summary += QString("faceConeOffset: %1\n").arg(pinion.faceConeOffset);
-    summary += QString("rootConeOffset: %1\n").arg(pinion.rootConeOffset);
-    summary += QString("innerConeDistance: %1\n").arg(pinion.innerConeDistance);
-    summary += QString("outerConeDistance: %1\n").arg(pinion.outerConeDistance);
-    summary += QString("pitchConeDistance: %1\n").arg(pinion.pitchConeDistance);
-    summary += QString("addendum: %1\n").arg(pinion.addendum);
-    summary += QString("dedendum: %1\n").arg(pinion.dedendum);
-    summary += QString("backlash: %1\n").arg(pinion.backlash);
-    summary += QString("shaftAngle: %1\n").arg(pinion.shaftAngle);
-    summary += QString("pressureAngle: %1\n").arg(pinion.pressureAngle);
-    summary += QString("spiralAngle: %1\n").arg(pinion.spiralAngle);
-    summary += QString("spiralType: %1\n")
-                   .arg(spiralFunctionUtils::toString(pinion.spiralType));
+      table->setItem(row, 0, new QTableWidgetItem(name));
 
-    output->setText(summary);
+      if (gearVal == pinionVal) {
+        // Insert merged cell for gear+pinion
+        table->setItem(row, 1, new QTableWidgetItem(gearVal));
+        table->setSpan(row, 1, 1, 2);  // Merge Gear + Pinion
+        table->item(row, 1)->setTextAlignment(Qt::AlignCenter);
+      } else {
+        table->setItem(row, 1, new QTableWidgetItem(gearVal));
+        table->setItem(row, 2, new QTableWidgetItem(pinionVal));
+      }
+    };
 
+    // Fill rows
+    addRow("Teeth", QString::number(gear.numTeeth),
+           QString::number(pinion.numTeeth));
+    addRow("Pitch Cone Angle", QString::number(gear.pitchConeAngle),
+           QString::number(pinion.pitchConeAngle));
+    addRow("Face Cone Angle", QString::number(gear.faceConeAngle),
+           QString::number(pinion.faceConeAngle));
+    addRow("Root Cone Angle", QString::number(gear.rootConeAngle),
+           QString::number(pinion.rootConeAngle));
+    addRow("Module", QString::number(gear.module),
+           QString::number(pinion.module));
+    addRow("Face Cone Offset", QString::number(gear.faceConeOffset),
+           QString::number(pinion.faceConeOffset));
+    addRow("Root Cone Offset", QString::number(gear.rootConeOffset),
+           QString::number(pinion.rootConeOffset));
+    addRow("Inner Cone Distance", QString::number(gear.innerConeDistance),
+           QString::number(pinion.innerConeDistance));
+    addRow("Outer Cone Distance", QString::number(gear.outerConeDistance),
+           QString::number(pinion.outerConeDistance));
+    addRow("Pitch Cone Distance", QString::number(gear.pitchConeDistance),
+           QString::number(pinion.pitchConeDistance));
+    addRow("Addendum", QString::number(gear.addendum),
+           QString::number(pinion.addendum));
+    addRow("Dedendum", QString::number(gear.dedendum),
+           QString::number(pinion.dedendum));
+    addRow("Backlash", QString::number(gear.backlash),
+           QString::number(pinion.backlash));
+    addRow("Shaft Angle", QString::number(gear.shaftAngle),
+           QString::number(pinion.shaftAngle));
+    addRow("Pressure Angle", QString::number(gear.pressureAngle),
+           QString::number(pinion.pressureAngle));
+    addRow("Spiral Angle", QString::number(gear.spiralAngle),
+           QString::number(pinion.spiralAngle));
+    addRow("Spiral Function", spiralFunctionUtils::toString(gear.spiralType),
+           spiralFunctionUtils::toString(pinion.spiralType));
+
+    table->setShowGrid(true);
+    dlgLayout->addWidget(table);
+
+    // Back & Exit buttons
+    QHBoxLayout* buttonLayout = new QHBoxLayout();
     QPushButton* backBtn = new QPushButton("Back", resultDialog);
     QPushButton* exitBtn = new QPushButton("Exit", resultDialog);
+    buttonLayout->addWidget(backBtn);
+    buttonLayout->addWidget(exitBtn);
 
     QObject::connect(backBtn, &QPushButton::clicked, resultDialog,
                      &QDialog::accept);
     QObject::connect(exitBtn, &QPushButton::clicked, resultDialog,
                      &QDialog::reject);
 
-    dlgLayout->addWidget(output);
-    dlgLayout->addWidget(backBtn);
-    dlgLayout->addWidget(exitBtn);
+    dlgLayout->addLayout(buttonLayout);
 
     resultDialog->exec();  // modal
   });
