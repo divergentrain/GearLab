@@ -4,8 +4,8 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
+#include "../BevelGearForm.hpp"
 #include "../OutputDirSelect.hpp"
-#include "../ParamInput.cpp"
 
 int main(int argc, char* argv[]) {
   QApplication app(argc, argv);
@@ -20,16 +20,26 @@ int main(int argc, char* argv[]) {
   OutputDirSelect* dirSelector = new OutputDirSelect(centralWidget);
   layout->addWidget(dirSelector);
 
-  // Step 2: When user confirms a directory, show the gear param form
   QObject::connect(dirSelector, &OutputDirSelect::directoryConfirmed,
-                   [&](const QString& dir) {
+                   [&](const QString& dir, const QString& projectName,
+                       const bool& import, const QString& filePath) {
                      qDebug() << "Directory confirmed:" << dir;
+                     qDebug() << "Project name:" << projectName;
+                     qDebug() << "Import:" << import;
+                     qDebug() << "Imported File Path:" << filePath;
 
-                     // Remove the directory selector widget
+                     // Hide the directory selector
                      dirSelector->hide();
 
-                     // Add gear form instead
-                     QWidget* gearForm = createGearParamForm(centralWidget);
+                     // Step 3: Create BevelGearForm with default pair
+                     BevelGearForm* gearForm = new BevelGearForm(centralWidget);
+                     if (import)
+                       gearForm->importParametersFromDirSelect(filePath);
+
+                     // Set root directory and project name from selection
+                     gearForm->setRootDir(dir);
+                     gearForm->setProjectName(projectName);
+
                      layout->addWidget(gearForm);
                    });
 
