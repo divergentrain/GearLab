@@ -241,12 +241,12 @@ bool BevelGearForm::exportParameters() {
   QTextStream out(&file);
 
   // Project section
-  out << "[[project]]\n";
+  out << "[project]\n";
   out << "projectName = \"" << projectName << "\"\n";
   out << "rootDir = \"" << rootDir << "\"\n\n";
 
   // Gear section
-  out << "[[gear]]\n";
+  out << "[gear]\n";
   out << "numTeeth = " << gear.numTeeth << "\n";
   out << "module = " << gear.module << "\n";
   out << "backlash = " << gear.backlash << "\n";
@@ -262,7 +262,7 @@ bool BevelGearForm::exportParameters() {
   out << "spiralType = " << (int)gear.spiralType << "\n\n";
 
   // Pinion section
-  out << "[[pinion]]\n";
+  out << "[pinion]\n";
   out << "numTeeth = " << pinion.numTeeth << "\n";
   out << "module = " << pinion.module << "\n";
   out << "backlash = " << pinion.backlash << "\n";
@@ -298,7 +298,7 @@ bool BevelGearForm::importParameters() {
 
   while (!in.atEnd()) {
     QString line = in.readLine().trimmed();
-    if (line.startsWith("[[")) {
+    if (line.startsWith("[")) {
       if (line.contains("project"))
         currentSection = "project";
       else if (line.contains("gear"))
@@ -361,7 +361,7 @@ void BevelGearForm::importParametersFromDirSelect(const QString& filePath) {
 
   while (!in.atEnd()) {
     QString line = in.readLine().trimmed();
-    if (line.startsWith("[[")) {
+    if (line.startsWith("[")) {
       if (line.contains("project"))
         currentSection = "project";
       else if (line.contains("gear"))

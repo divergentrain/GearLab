@@ -87,7 +87,7 @@ bool OutputDirSelect::importProjectName() {
 
   while (!in.atEnd()) {
     QString line = in.readLine().trimmed();
-    if (line.startsWith("[[")) {
+    if (line.startsWith("[")) {
       if (line.contains("project"))
         currentSection = "project";
       else
